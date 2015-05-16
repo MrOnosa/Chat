@@ -1,4 +1,4 @@
-var pg = require('pg');
+//var pg = require('pg');
 var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
@@ -12,8 +12,12 @@ app.set('port', (process.env.PORT || 5000));
 app.get('/', function(request, response) {
   var result = ''
   var times = process.env.TIMES || 5
-  for (i=0; i < times; i++)
-    result += "<marquee>"+ cool() + "</marquee><br />";
+  for (i=0; i < times; i++) {
+	  result += "<marquee behavior='alternate' direction=" 
+		+ (Math.floor((Math.random() * 2) + 1) % 2 == 0 ? "'left' " : "'right' ") 
+		+ "scrollamount='" + Math.floor(((Math.random() * 12) + 1 ))+ "'"
+		+ ">" + cool() + "</marquee><br />";
+  }
   response.send(result);
 })
 
