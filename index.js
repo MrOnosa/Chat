@@ -2,8 +2,10 @@ var pg = require('pg');
 var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 3000));
 
 //app.get('/', function(request, response) {
 //  response.send(cool());
@@ -34,6 +36,24 @@ app.get('/db', function (request, response) {
   });
 })
 
-app.listen(app.get('port'), function() {
+
+app.get('/chat', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
+/*app.listen(app.get('port'), function() {
   console.log("Node app is running on port:" + app.get('port'))
-})
+})*/
