@@ -5,7 +5,6 @@ var cool = require('cool-ascii-faces');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.use(express.static(__dirname + '/public'));
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -26,6 +25,8 @@ app.get('/', function(request, response) {
   response.send(result);
 })
 
+app.use(express.static(__dirname + '/public'));
+
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table', function(err, result) {
@@ -45,7 +46,6 @@ var usernames = {};
 var numUsers = 0;
 
 app.get('/chat', function(req, res){
-  res.sendFile(__dirname + '/public/main.js');
   res.sendFile(__dirname + '/public/index.html');
 });
 
