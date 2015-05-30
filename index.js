@@ -87,11 +87,16 @@ io.on('connection', function(socket){
   
    socket.on('chat message', function(msg){
     console.log(socket.username + ': ' + msg);
-	//io.emit('chat message', msg);
-	socket.broadcast.emit('chat message', {
+	io.emit('chat message', {
       username: socket.username,
       message: msg
     });
+	
+	//Sends to everyone else...
+	//socket.broadcast.emit('chat message', {
+    //  username: socket.username,
+    //  message: msg
+    //});
   });
 });
 

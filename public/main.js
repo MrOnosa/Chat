@@ -28,7 +28,7 @@ $(function() {
 
   // Whenever the server emits 'user left', log it in the chat body
   socket.on('user left', function (data) {
-	  $('#messages').append($('<li>').text(data.username + ' left' + data.numUsers + ' users remain.'));
+	  $('#messages').append($('<li>').text(data.username + ' left. ' + data.numUsers + ' users remain.'));
   });
 
 	  
