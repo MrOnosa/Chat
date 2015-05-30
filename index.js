@@ -44,6 +44,7 @@ var usernames = {};
 var numUsers = 0;
 
 app.get('/chat', function(req, res){
+  res.sendFile(__dirname + '/public/main.js');
   res.sendFile(__dirname + '/public/index.html');
 });
 
