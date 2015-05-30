@@ -81,7 +81,7 @@ io.on('connection', function(socket){
         username: socket.username,
         numUsers: numUsers
       });
-  });
+  }});
   
    socket.on('chat message', function(msg){
     console.log('message: ' + msg);
