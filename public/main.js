@@ -18,7 +18,7 @@ $(function() {
 	  socket.on('login', function (data) {
     
     // Display the welcome message
-    $('#messages').append($('<li>').text("Welcome to Socket.IO Chat – " + data.numUsers);
+    $('#messages').append($('<li>').text("Welcome to Socket.IO Chat – " + data.numUsers));
   });
 	  
 	  // Whenever the server emits 'user joined', log it in the chat body
