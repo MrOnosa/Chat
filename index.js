@@ -4,6 +4,7 @@ var app = express();
 var cool = require('cool-ascii-faces');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+//app.use(express.static(__dirname + '/public'));
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -36,15 +37,50 @@ app.get('/db', function (request, response) {
   });
 })
 
+// Chatroom
+
+// usernames which are currently connected to the chat
+var usernames = {};
+var numUsers = 0;
 
 app.get('/chat', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/public/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket){	
   console.log('a user connected');
+  var addedUser = false;
+  
+   socket.on('add user', function (username) {
+    // we store the username in the socket session for this client
+    socket.username = username;
+    // add the client's username to the global list
+    usernames[username] = username;
+    ++numUsers;
+    addedUser = true;
+    socket.emit('login', {
+      numUsers: numUsers
+    });
+    // echo globally (all clients) that a person has connected
+    socket.broadcast.emit('user joined', {
+      username: socket.username,
+      numUsers: numUsers
+    });
+  });
+  
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    console.log('user disconnected: ' + socket.username);
+	
+	// remove the username from global usernames list
+    if (addedUser) {
+      delete usernames[socket.username];
+      --numUsers;
+
+      // echo globally that this client has left
+      socket.broadcast.emit('user left', {
+        username: socket.username,
+        numUsers: numUsers
+      });
   });
   
    socket.on('chat message', function(msg){
