@@ -11,14 +11,14 @@ $(function() {
 		return false;
 	  });
 	  
-	  socket.on('chat message', function(msg){
-		$('#messages').append($('<li>').text(msg));
+	  socket.on('chat message', function(data){
+		$('#messages').append($('<li>').text(data.username + ": " + data.message));
 	  });
 	  
 	  socket.on('login', function (data) {
     
     // Display the welcome message
-    $('#messages').append($('<li>').text("Welcome to Socket.IO Chat – " + data.numUsers));
+    $('#messages').append($('<li>').text("Welcome to Socket.IO Chat. " + data.numUsers + " users online"));
   });
 	  
 	  // Whenever the server emits 'user joined', log it in the chat body
